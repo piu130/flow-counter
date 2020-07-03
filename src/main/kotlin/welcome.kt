@@ -1,30 +1,34 @@
-import kotlinx.html.InputType
-import kotlinx.html.js.onChangeFunction
-import org.w3c.dom.HTMLInputElement
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.html.js.onClickFunction
 import react.*
+import react.dom.button
 import react.dom.div
-import react.dom.input
 
-interface WelcomeProps : RProps {
-    var name: String
+object CounterStore {
+    private val _counter = MutableStateFlow(0)
+    val counter: StateFlow<Int> get() = _counter
+    
+    fun inc() { _counter.value++ }
 }
 
-fun RBuilder.welcome(handler: WelcomeProps.() -> Unit) = child(welcome) { attrs { handler() } }
-val welcome = functionalComponent<WelcomeProps> {
-    val (name, setName) = useState(it.name)
+fun RBuilder.welcome(handler: RProps.() -> Unit) = child(welcome) { attrs { handler() } }
+val welcome = functionalComponent<RProps> {
+    val (counter, setCounter) = useState(CounterStore.counter.value)
+
+    useEffectWithCleanup(listOf()) {
+        val job = CounterStore.counter.onEach { setCounter(it) }.launchIn(GlobalScope)
+        return@useEffectWithCleanup { job.cancel() }
+    }
 
     div {
-        +"Hello, $name"
+        +"Counter: $counter"
     }
-    input {
-        attrs {
-            type = InputType.text
-            value = name
-            onChangeFunction = { event ->
-                setName(
-                    (event.target as HTMLInputElement).value
-                )
-            }
-        }
+    button {
+        attrs.onClickFunction = { CounterStore.inc() }
+        +"Increment"
     }
 }
