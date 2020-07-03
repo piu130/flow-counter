@@ -1,10 +1,7 @@
 import kotlinx.html.InputType
 import kotlinx.html.js.onChangeFunction
 import org.w3c.dom.HTMLInputElement
-import react.RBuilder
-import react.RComponent
-import react.RProps
-import react.RState
+import react.*
 import react.dom.div
 import react.dom.input
 
@@ -12,27 +9,21 @@ interface WelcomeProps : RProps {
     var name: String
 }
 
-data class WelcomeState(val name: String) : RState
+fun RBuilder.welcome(handler: WelcomeProps.() -> Unit) = child(welcome) { attrs { handler() } }
+val welcome = functionalComponent<WelcomeProps> {
+    val (name, setName) = useState(it.name)
 
-class Welcome(props: WelcomeProps) : RComponent<WelcomeProps, WelcomeState>(props) {
-
-    init {
-        state = WelcomeState(props.name)
+    div {
+        +"Hello, $name"
     }
-
-    override fun RBuilder.render() {
-        div {
-            +"Hello, ${state.name}"
-        }
-        input {
-            attrs {
-                type = InputType.text
-                value = state.name
-                onChangeFunction = { event ->
-                    setState(
-                        WelcomeState(name = (event.target as HTMLInputElement).value)
-                    )
-                }
+    input {
+        attrs {
+            type = InputType.text
+            value = name
+            onChangeFunction = { event ->
+                setName(
+                    (event.target as HTMLInputElement).value
+                )
             }
         }
     }
