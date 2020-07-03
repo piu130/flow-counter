@@ -19,8 +19,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.1")
     implementation("org.jetbrains:kotlin-react:16.13.1-pre.107-kotlin-1.4-M2")
     implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.107-kotlin-1.4-M2")
-    implementation(npm("react","16.13.0"))
-    implementation(npm("react-dom","16.13.0"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7-1.4-M2")
+    implementation(npm("react","16.13.1"))
+    implementation(npm("react-dom","16.13.1"))
 }
 kotlin {
     js {
