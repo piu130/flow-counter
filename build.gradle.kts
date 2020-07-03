@@ -17,8 +17,8 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-js"))
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.1")
-    implementation("org.jetbrains:kotlin-react:16.13.0-pre.93-kotlin-1.4-M2")
-    implementation("org.jetbrains:kotlin-react-dom:16.13.0-pre.93-kotlin-1.4-M2")
+    implementation("org.jetbrains:kotlin-react:16.13.1-pre.107-kotlin-1.4-M2")
+    implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.107-kotlin-1.4-M2")
     implementation(npm("react","16.13.0"))
     implementation(npm("react-dom","16.13.0"))
 }
